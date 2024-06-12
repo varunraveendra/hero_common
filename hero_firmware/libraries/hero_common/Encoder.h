@@ -27,6 +27,8 @@ namespace hero_common
       _left_dist_type left_dist;
       typedef float _right_dist_type;
       _right_dist_type right_dist;
+      typedef float _t_difference_type;
+      _t_difference_type t_difference;
       typedef float _timestep_type;
       _timestep_type timestep;
       typedef float _left_speed_type;
@@ -46,6 +48,7 @@ namespace hero_common
       right_diff(0),
       left_dist(0),
       right_dist(0),
+      t_difference(0),
       timestep(0),
       left_speed(0),
       right_speed(0),
@@ -64,6 +67,7 @@ namespace hero_common
       offset += serializeAvrFloat64(outbuffer + offset, this->right_diff);
       offset += serializeAvrFloat64(outbuffer + offset, this->left_dist);
       offset += serializeAvrFloat64(outbuffer + offset, this->right_dist);
+      offset += serializeAvrFloat64(outbuffer + offset, this->t_difference);
       offset += serializeAvrFloat64(outbuffer + offset, this->timestep);
       offset += serializeAvrFloat64(outbuffer + offset, this->left_speed);
       offset += serializeAvrFloat64(outbuffer + offset, this->right_speed);
@@ -82,6 +86,7 @@ namespace hero_common
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->right_diff));
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->left_dist));
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->right_dist));
+      offset += deserializeAvrFloat64(inbuffer + offset, &(this->t_difference));
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->timestep));
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->left_speed));
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->right_speed));
@@ -91,7 +96,7 @@ namespace hero_common
     }
 
     virtual const char * getType() override { return "hero_common/Encoder"; };
-    virtual const char * getMD5() override { return "b5586cdbae9b740afc6a1f403a2d7dde"; };
+    virtual const char * getMD5() override { return "ec5c02e99365233af779a0f9f54cb0df"; };
 
   };
 
