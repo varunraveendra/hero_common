@@ -6,6 +6,7 @@ float64 left_diff
 float64 right_diff
 float64 left_dist
 float64 right_dist
+float64 t_difference
 float64 timestep
 float64 left_speed
 float64 right_speed

@@ -55,6 +55,7 @@
   <build_export_depend>rosserial_python</build_export_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>rosserial_python</exec_depend>
+  <depend>python-opencv</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
