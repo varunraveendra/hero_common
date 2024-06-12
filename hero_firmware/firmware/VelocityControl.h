@@ -89,18 +89,34 @@ class VelocityControl {
 
     double leftMotorSetpoint = 0.0;
     double leftMotorInput = 0.0;
+    double leftMotorTicks=0.0;
+    double lastLeftTicks=0.0;
     double leftMotorOutput = 0.0;
     double leftMotorStartPos = 0.0;
+    double leftout=0.0;
+    double leftoutfiltered=0.0;
 
     double rightMotorSetpoint = 0.0;
     double rightMotorInput = 0.0;
+    double rightMotorTicks=0.0;
+    double lastRightTicks=0.0;
     double rightMotorOutput = 0.0;
     double rightMotorStartPos = 0.0;
+    double rightout=0.0;
+    double rightoutfiltered=0.0;
+
+    double leftmotorintegral=0.0;
+    double rightmotorintegral=0.0;
+
+    double leftmotorprev=0.0;
+    double rightmotorprev=0.0;
+
+    
 
     double output_lim = 250;
     double sample_time = 50000;
     unsigned long watchdog = 0;
-    unsigned long rate = 20, timer;
+    unsigned long rate = 20, timer, current;
 
     char stream[100];
 

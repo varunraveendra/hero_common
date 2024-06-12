@@ -32,8 +32,8 @@ WheelEncoder::WheelEncoder(unsigned long rate) {
   this->leftEncoder = new Encoder(ENC_A_LEFT, ENC_B_LEFT);            /* Left Encoder Configuration */
   this->rightEncoder = new Encoder(ENC_A_RIGHT, ENC_B_RIGHT);          /* Right Encoder Configuration */
 
-  this->leftKF = new SimpleKalmanFilter(0.02f, 0.02f, 0.2f);
-  this->rightKF = new SimpleKalmanFilter(0.02f, 0.02f, 0.2f);
+  this->leftKF = new SimpleKalmanFilter(0.03f, 0.03f, 0.13f);
+  this->rightKF = new SimpleKalmanFilter(0.03f, 0.03f, 0.13f);
 
   this->timer = millis();
   this->setRate(rate);
@@ -74,6 +74,7 @@ void WheelEncoder::clear() {
   this->rightEncoder->write(0);
   this->encoderMessage.left_ticks = 0;
   this->encoderMessage.right_ticks = 0;
+  this->encoderMessage.t_difference= 0;
 }
 
 
@@ -102,6 +103,9 @@ void WheelEncoder::readSensor(void) {
   /* Update last encoder ticks*/
   this->encoderMessage.left_ticks = left_ticks_now;
   this->encoderMessage.right_ticks = right_ticks_now;
+  this->encoderMessage.t_difference= abs(left_ticks_now-right_ticks_now);
+  
+  
 
   /* Transform ticks to distance in meters */
   this->encoderMessage.left_dist = MOT_STEP_DIST * this->encoderMessage.left_diff;
@@ -111,11 +115,26 @@ void WheelEncoder::readSensor(void) {
   this->encoderMessage.left_speed  = (double) this->encoderMessage.left_dist / (this->encoderMessage.timestep + 1e-10);
   this->encoderMessage.right_speed = (double) this->encoderMessage.right_dist / (this->encoderMessage.timestep + 1e-10);
   /* Low-pass filter */
-  //this->encoderMessage.left_speed_filtered = (1.0 - ENCODER_SPEED_GAIN) * this->encoderMessage.left_speed_filtered + ENCODER_SPEED_GAIN * this->encoderMessage.left_speed;
-  //this->encoderMessage.right_speed_filtered = (1.0 - ENCODER_SPEED_GAIN) * this->encoderMessage.right_speed_filtered + ENCODER_SPEED_GAIN * this->encoderMessage.right_speed;
+  double ls= ((1.0 - ENCODER_SPEED_GAIN) * this->encoderMessage.left_speed_filtered) + (ENCODER_SPEED_GAIN * this->encoderMessage.left_speed);
+  double rs= ((1.0 - ENCODER_SPEED_GAIN) * this->encoderMessage.right_speed_filtered) + (ENCODER_SPEED_GAIN * this->encoderMessage.right_speed);
+  if (abs(ls-this->encoderMessage.left_speed)< 0.2){
+  this->encoderMessage.left_speed_filtered = ls;
+  }
+  else {
+    this->encoderMessage.left_speed_filtered = this->encoderMessage.left_speed_filtered;
+  }
+
+  if (abs(rs-this->encoderMessage.right_speed)< 0.2){
+  this->encoderMessage.right_speed_filtered = rs;
+  }
+  else {
+    this->encoderMessage.right_speed_filtered = this->encoderMessage.right_speed_filtered;
+  }
+  
   /* Kalman filter */
-  this->encoderMessage.left_speed_filtered = this->leftKF->updateEstimate(this->encoderMessage.left_speed);
-  this->encoderMessage.right_speed_filtered = this->rightKF->updateEstimate(this->encoderMessage.right_speed);
+  //this->encoderMessage.left_speed_filtered = this->leftKF->updateEstimate(this->encoderMessage.left_speed_filtered);
+  //this->encoderMessage.right_speed_filtered = this->rightKF->updateEstimate(this->encoderMessage.right_speed_filtered);
+  
 
   this->readTimer = micros();
 }

@@ -49,14 +49,17 @@ RangeSensor rangeSensor(10);
 #include "WheelEncoder.h"
 WheelEncoder wheelEncoder(30);
 
-#include "IMUSensor.h"
-IMUSensor imuSensor(20);
+//#include "IMUSensor.h"
+//IMUSensor imuSensor(20);
+
+#include "tof.h"
+TOFSensor tofSensor(20);
 
 #include "Odometry.h"
 Odometry odometry(30);
 
 #include "MotorDriver.h"
-MotorDriver motorDriver(20);
+MotorDriver motorDriver(30);
 
 #include "PositionControl.h"
 PositionControl positionControl(20);
@@ -80,7 +83,8 @@ void setup() {
   config_mode = rangeSensor.configModeCheck();
   /* Clean status led */
   ledStatus.reset();
-
+Serial.begin(115200);
+Serial.println("Here0");
   switch (config_mode) {
     case 17:  // RandomWalk demo
       {
@@ -117,17 +121,19 @@ void setup() {
         ledStatus.init(rosHandle.nh, rosHandle.heroName);
         // Setup range sensor to communicate with ROS
         rangeSensor.init(rosHandle.nh, rosHandle.heroName);
+        //setting up TOF sensor
+        tofSensor.init(rosHandle.nh, rosHandle.heroName);
         // Setup imu sensor to communicate with ROS
-        imuSensor.init(rosHandle.nh, rosHandle.heroName);
+        //imuSensor.init(rosHandle.nh, rosHandle.heroName);
         // Setup wheel encoder sensor to communicate with ROS
         wheelEncoder.init(rosHandle.nh, rosHandle.heroName);
 
         // Compute odometry to send with ROS
-#ifdef __IMU_SENSOR_H__
-        odometry.init(rosHandle.nh, rosHandle.heroName, wheelEncoder, imuSensor);
-#else
+//#ifdef __IMU_SENSOR_H__
+  //      odometry.init(rosHandle.nh, rosHandle.heroName, wheelEncoder, imuSensor);
+//#else
         odometry.init(rosHandle.nh, rosHandle.heroName, wheelEncoder);
-#endif
+//#endif
 
         // Setup motors to communicate with ROS
         motorDriver.init(rosHandle.nh, rosHandle.heroName);
@@ -149,7 +155,7 @@ void loop() {
 
   switch (config_mode) {
     case 17:  // Random Walk demo
-      {
+      {Serial.println("Here1");
         // random walk controller update
         randomWalkDemo.update(5);
         // led status update
@@ -161,17 +167,18 @@ void loop() {
       }
 
     case 255:  // Web Configuration Mode
-      {
+      {Serial.println("Here2");
         webConfig.update();
         break;
       }
 
     default:  // ROS Mode
-      {
+      {Serial.println("Here3");
         if (rosHandle.connected()) {
           /* Get data from sensor and send it to ROS */
           motorDriver.update(10);
-          imuSensor.update(30);
+          //imuSensor.update(30);
+          tofSensor.update(30);
           ledStatus.update(2);
           rangeSensor.update(5);
           odometry.update(30);

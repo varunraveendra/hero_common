@@ -107,25 +107,62 @@ void VelocityControl::update() {
 
 /* Update control loop and set the output to the motors */
 void VelocityControl::update(unsigned long rate) {
-  if (((millis() - this->timer) > (1000 / rate)) && ((millis() - this->watchdog) < 1000)) {
-    /* Position-Control */
+  this->current= millis();
+  if (((this->current - this->timer) > (1000 / rate)) && ((this->current - this->watchdog) < 1000)) {
+     //Position-Control 
     this->wheelEncoder->readSensor();
-    this->leftMotorInput = (double)this->wheelEncoder->getMessage().left_speed_filtered;
-    this->rightMotorInput = (double)this->wheelEncoder->getMessage().right_speed_filtered;;
+    this->leftMotorInput = (double)this->wheelEncoder->getMessage().left_speed;
+    this->rightMotorInput = (double)this->wheelEncoder->getMessage().right_speed;
+    this->leftMotorTicks=(double)this->wheelEncoder->getMessage().left_ticks;
+    this->rightMotorTicks=(double)this->wheelEncoder->getMessage().right_ticks;
     if (this->tuning) {
       this->watchdog = millis();
       this->tunePID();
       sprintf(this->stream, "\33[93m[%s] Tunning Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)this->leftMotorInput, (float)this->rightMotorInput, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
       this->nh_->loginfo(this->stream);
     }
-    else {
-      this->leftMotorPID->Compute();
-      this->rightMotorPID->Compute();
+    else  {
+      /*code modified , P I D control*/
+      this->wheelEncoder->readSensor();
+      double left_delta=(this->leftMotorTicks-this->lastLeftTicks)*rate;
+      double right_delta=(this->rightMotorTicks-this->lastRightTicks)*rate;
+      //double lefterror=-this->leftMotorSetpoint + this-> wheelEncoder->getMessage().left_speed_filtered;//reverse
+      //double righterror=this->rightMotorSetpoint - this-> wheelEncoder->getMessage().right_speed_filtered;
+      
+      this->lastLeftTicks=this->leftMotorTicks;
+      this->lastRightTicks=this->rightMotorTicks;
 
-//      sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)this->leftMotorInput, (float)this->rightMotorInput, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
-//      this->nh_->loginfo(this->stream);
+      int lefterror=-this->leftMotorSetpoint + left_delta;
+      int righterror=this->rightMotorSetpoint - right_delta;
+
+
+      //integral
+      this->leftmotorintegral+= lefterror;
+      this->rightmotorintegral+= righterror;
+
+      //derivative
+      double leftmotorderiv= (lefterror - this->leftmotorprev);
+      double rightmotorderiv= (righterror - this->rightmotorprev);
+
+      this->leftout+=(lefterror*configVelPID.lkp) + (this->leftmotorintegral * configVelPID.lki) + (leftmotorderiv * configVelPID.lkd);//reverse
+      this->rightout+=(righterror*configVelPID.rkp) + (this->rightmotorintegral * configVelPID.rki) + (rightmotorderiv * configVelPID.rkd);
+
+      this->leftoutfiltered=(0.4 * this->leftout) + ((1-0.4)*this->leftoutfiltered);
+      this->rightoutfiltered=(0.4 * this->rightout) + ((1-0.4)*this->rightoutfiltered);
+
+      this->leftMotorOutput=constrain(this->leftoutfiltered, -output_lim, output_lim);
+      this->rightMotorOutput=constrain(this->rightoutfiltered, -output_lim, output_lim);
+      
+      //this->leftMotorPID->Compute();
+      //this->rightMotorPID->Compute();
+
+      sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)left_delta, (float)right_delta, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
+      this->nh_->loginfo(this->stream);
 
       this->motorDriver->command((int)(this->leftMotorOutput) + (int)(this->motorDriver->leftMotorDeadzone), (int)(this->rightMotorOutput) + (int)(this->motorDriver->rightMotorDeadzone));
+
+      this->leftmotorprev=lefterror;
+      this->rightmotorprev=righterror;
     }
     this->timer = millis();
   }
@@ -172,17 +209,17 @@ void VelocityControl::cmdvelCallback(const geometry_msgs::Twist& msg) {
     this->watchdog = 0;
     this->motorDriver->halt();
   } else {
-    double leftMotorDirection = V_l * this->leftMotorSetpoint;
+    double leftMotorDirection = V_l * (this->leftMotorSetpoint*MOT_STEP_DIST);
     if (leftMotorDirection < 0) {
       this->resetLeftPID();
     }
-    double rightMotorDirection = V_r * this->rightMotorSetpoint;
+    double rightMotorDirection = V_r * (this->rightMotorSetpoint*MOT_STEP_DIST);
     if (rightMotorDirection < 0) {
       this->resetRightPID();
     }
 
-    this->leftMotorSetpoint = V_l;
-    this->rightMotorSetpoint = V_r;
+    this->leftMotorSetpoint = V_l/MOT_STEP_DIST;// it was only V_l
+    this->rightMotorSetpoint = V_r/MOT_STEP_DIST;//same here only V_r
     
     this->watchdog = millis();
   }

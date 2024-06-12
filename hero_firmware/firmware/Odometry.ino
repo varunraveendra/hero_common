@@ -31,8 +31,8 @@ Odometry::Odometry(unsigned long rate) {
   this->setRate(rate);
 }
 
-#ifdef __IMU_SENSOR_H__
-void Odometry::init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder, IMUSensor &imuSensor) {
+//#ifdef __IMU_SENSOR_H__
+/*void Odometry::init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder, IMUSensor &imuSensor) {
   this->imuSensor = &imuSensor;
   this->imuSensor->readSensor();
   this->imuInitValue = this->imuSensor->get();
@@ -41,32 +41,32 @@ void Odometry::init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEnc
   this->wheelEncoder = &wheelEncoder;
   this->thetaKF = new SimpleKalmanFilter(0.002, 0.002, 0.2);
 
-  this->nh_ = &nh; /* ROS Node Handle */
+  this->nh_ = &nh; // ROS Node Handle
   this->heroName = (heroName.charAt(0) == '/') ? heroName.substring(1) : heroName;
 
-  /* Address TF */
+  // Address TF 
   this->broadcaster.init(nh);
 
-  /* Address odometry publisher */
+  // Address odometry publisher 
   this->odomTopic = String("/") + this->heroName + String("/odom");                /* Update topic name */
-  this->odomPub = new ros::Publisher(this->odomTopic.c_str(), &this->odomMessage); /* Instantiate publisher */
-  this->odomFrame = this->heroName + String("/odom");                              /* Update frame name */
-  this->baseFrame = this->heroName + String("/base_link");                         /* Update frame name */
-  this->leftWheelFrame = this->heroName + String("/left_wheel_link");              /* Update frame name */
-  this->rightWheelFrame = this->heroName + String("/right_wheel_link");            /* Update frame name */
-  this->hatFrame = this->heroName + String("/hat_link");                           /* Update frame name */
-  this->laserFrame = this->heroName + String("/laser_link");                       /* Update frame name */
-  this->odomMessage.header.frame_id = this->odomFrame.c_str();                     /* Set frame name */
-  this->odomMessage.header.seq = -1;                                               /* Start message sequency */
-  this->odomMessage.child_frame_id = this->baseFrame.c_str();                      /* Update frame name */
-  this->nh_->advertise(*this->odomPub);
+  //this->odomPub = new ros::Publisher(this->odomTopic.c_str(), &this->odomMessage); /* Instantiate publisher */
+  //this->odomFrame = this->heroName + String("/odom");                              /* Update frame name */
+  //this->baseFrame = this->heroName + String("/base_link");                         /* Update frame name */
+  //this->leftWheelFrame = this->heroName + String("/left_wheel_link");              /* Update frame name */
+  //this->rightWheelFrame = this->heroName + String("/right_wheel_link");            /* Update frame name */
+  //this->hatFrame = this->heroName + String("/hat_link");                           /* Update frame name */
+  //this->laserFrame = this->heroName + String("/laser_link");                       /* Update frame name */
+  //this->odomMessage.header.frame_id = this->odomFrame.c_str();                     /* Set frame name */
+  //this->odomMessage.header.seq = -1;                                               /* Start message sequency */
+  //this->odomMessage.child_frame_id = this->baseFrame.c_str();                      /* Update frame name */
+  //this->nh_->advertise(*this->odomPub);
 
   /* Address set odom service */
-  this->setOdomTopic = String("/") + this->heroName + String("/set_odom");                                                                                                              /* Update service name */
-  this->setOdomService = new ros::ServiceServer<hero_common::SetOdom::Request, hero_common::SetOdom::Response, Odometry>(this->setOdomTopic.c_str(), &Odometry::setOdomCallback, this); /* Instantiate service */
-  this->nh_->advertiseService(*this->setOdomService);                                                                                                                                   /* Address set odom service */
-}
-#endif
+  //this->setOdomTopic = String("/") + this->heroName + String("/set_odom");                                                                                                              /* Update service name */
+  //this->setOdomService = new ros::ServiceServer<hero_common::SetOdom::Request, hero_common::SetOdom::Response, Odometry>(this->setOdomTopic.c_str(), &Odometry::setOdomCallback, this); /* Instantiate service */
+  //this->nh_->advertiseService(*this->setOdomService);                                                                                                                                   /* Address set odom service */
+//}
+//#endif
 
 void Odometry::init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder) {
   this->wheelEncoder = &wheelEncoder;
@@ -108,12 +108,12 @@ void Odometry::update(void) {
 
 /* Update and publish odom data */
 void Odometry::update(unsigned long rate) {
-#ifdef __IMU_SENSOR_H__
+//#ifdef __IMU_SENSOR_H__
 
-  if (millis() - this->imuBiasTimer < 15000) {
-    this->imuBias = this->imuSensor->get() - this->imuInitValue;
-  }
-#endif
+  //if (millis() - this->imuBiasTimer < 15000) {
+   // this->imuBias = this->imuSensor->get() - this->imuInitValue;
+  //}
+//#endif
   if ((millis() - this->timer) > (1000 / rate)) {
     this->compute();
     /* Publish odometry */
@@ -141,14 +141,14 @@ void Odometry::compute() {
   if (this->poseMessage.theta < -M_PI) this->poseMessage.theta += 2.0 * M_PI;
 
     /* Since all odometry is 6DOF we'll need a quaternion created from yaw. */
-#ifdef __IMU_SENSOR_H__
+//#ifdef __IMU_SENSOR_H__
   //  this->poseMessage.theta = 0.95 * (-this->imuSensor->get() + this->yaw_0) + 0.05 * this->poseMessage.theta;
   //this->odomMessage.twist.twist.linear.y = this->poseMessage.theta;
-  if (this->imuSensor->isEnable()) {
-    this->poseMessage.theta = -this->imuSensor->get() + this->imuBias;
-  }
+  //if (this->imuSensor->isEnable()) {
+  //  this->poseMessage.theta = -this->imuSensor->get() + this->imuBias;
+ // }
   //this->odomMessage.twist.twist.linear.z = this->poseMessage.theta;
-#endif
+//#endif
   this->odomMessage.pose.pose.orientation = tf::createQuaternionFromYaw(this->poseMessage.theta);
 
 

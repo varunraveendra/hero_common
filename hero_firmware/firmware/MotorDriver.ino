@@ -77,7 +77,7 @@ void MotorDriver::controlMotorWithStiffness(Servo& servo, int motorCmd) {
   int adjustedCmd = currentCmd + cmdDifference / MOTOR_STIFFNESS;
 
   // Keep the adjusted cmd within valid limits (usually 1000-2000 us)
-  adjustedCmd = constrain(adjustedCmd, 1000, 2000);
+  adjustedCmd = constrain(motorCmd, 1000, 2000);//it was adjustedCmd
 
   // Set the servo to the adjusted angle
   servo.writeMicroseconds(adjustedCmd);

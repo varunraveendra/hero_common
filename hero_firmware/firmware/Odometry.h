@@ -41,9 +41,9 @@
 #include "WheelEncoder.h"
 #include <SimpleKalmanFilter.h>         /* https://github.com/denyssene/SimpleKalmanFilter */
 
-#ifdef __IMU_SENSOR_H__
-#include "IMUSensor.h"
-#endif
+//#ifdef __IMU_SENSOR_H__
+//#include "IMUSensor.h"
+//#endif
 
 
 class Odometry {
@@ -53,13 +53,13 @@ class Odometry {
     /* Encoder-base Odometry */
     WheelEncoder *wheelEncoder;
     SimpleKalmanFilter *thetaKF;
-    #ifdef __IMU_SENSOR_H__
-    IMUSensor *imuSensor;
-    unsigned long imuBiasTimer = 0.0;
+    //#ifdef __IMU_SENSOR_H__
+    //IMUSensor *imuSensor;
+    /*unsigned long imuBiasTimer = 0.0;
     double imuBias = 0;
     double imuInitValue = 0;
     double imuLastYaw = 0;
-    #endif
+    #endif*/
     
     /** TF to publish transformation **/
     tf::TransformBroadcaster broadcaster;
@@ -89,9 +89,9 @@ class Odometry {
 
   public:
     Odometry(unsigned long rate);
-    #ifdef __IMU_SENSOR_H__
-    void init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder, IMUSensor &imuSensor);
-    #endif
+    //#ifdef __IMU_SENSOR_H__
+    //void init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder, IMUSensor &imuSensor);
+    //#endif
     void init(ros::NodeHandle &nh, String heroName, WheelEncoder &wheelEncoder);
     void update();
     void update(unsigned long rate);

@@ -56,8 +56,8 @@ int config_mode = 0;          /* If you cover all the IR sensors with the hand, 
 #define WHEEL_DIAMETER 0.0492f                        /* Wheel diameter in m. */
 #define WHEEL_SEPARATION 0.063f                       /* Separation between wheels (m) */
 #define WHEEL_CIRCUMFERENCE ((WHEEL_DIAMETER * M_PI)) /* Wheel circumference (meters). */
-#define MOT_STEP_DIST (WHEEL_CIRCUMFERENCE / 288.0f)  /* Distance for each motor step (meters); a complete turn is 288 steps (0.000535598 meters per step (m/steps)). */
-#define MAX_LINEAR_VEL 0.20                          /* max linear speed 25 m/s */
+#define MOT_STEP_DIST (WHEEL_CIRCUMFERENCE / 96.0f)  /* Distance for each motor step (meters); a complete turn is 288 steps (0.000535598 meters per step (m/steps)). This changes when encoder is placed outside the wheel, 1 encoder rotation=1 wheel rotation */
+#define MAX_LINEAR_VEL 0.2                          /* max linear speed 25 m/s */
 #define MAX_ANGULAR_VEL 8.0                          /* Max angular speed 0.08 rad/s */
 
 /* Encoder Configuration */
@@ -65,7 +65,7 @@ int config_mode = 0;          /* If you cover all the IR sensors with the hand, 
 #define ENC_B_LEFT 4            /* PIN D5 */
 #define ENC_A_RIGHT 10          /* PIN SD3 */
 #define ENC_B_RIGHT 5           /* PIN D1 */
-#define ENCODER_SPEED_GAIN 0.06 /* Encoder filter */
+#define ENCODER_SPEED_GAIN 0.3 /* Encoder filter */
 #define ENCODER_SPEED_GAIN_AGGRESSIVE 1.0
 
 /* Motor Configuration */
