@@ -1,0 +1,4 @@
+<launch>
+  <rosparam file="/home/varun/catkin_ws/src/hero_common/hero_bringup/config/parameter.yaml" command="load"/>
+  <node pkg="hero_bringup" type="multi_robot_controller.py" name="multi_robot_controller" output="screen"/>
+</launch>

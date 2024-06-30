@@ -10,6 +10,7 @@ project(hero_bringup)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   rosserial_python
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -163,6 +164,7 @@ install(PROGRAMS
   scripts/camera_node.py
   scripts/gui_node.py
   scripts/nav_node.py
+  scripts/multi_robot_controller.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
