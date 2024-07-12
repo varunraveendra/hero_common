@@ -156,8 +156,8 @@ void VelocityControl::update(unsigned long rate) {
       //this->leftMotorPID->Compute();
       //this->rightMotorPID->Compute();
 
-      sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)left_delta, (float)right_delta, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
-      this->nh_->loginfo(this->stream);
+      //sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)left_delta, (float)right_delta, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
+      //this->nh_->loginfo(this->stream);
 
       this->motorDriver->command((int)(this->leftMotorOutput) + (int)(this->motorDriver->leftMotorDeadzone), (int)(this->rightMotorOutput) + (int)(this->motorDriver->rightMotorDeadzone));
 
