@@ -7,7 +7,7 @@
   
   <node pkg="hero_bringup" type="multi_robot_controller.py" name="multi_robot_controller" output="screen"/>
   <param name="linear_true" value="$(arg lt)"/>
-  <param name="angular_true" value=$(arg at)"/>
+  <param name="angular_true" value="$(arg at)"/>
   <param name="linear_false" value="$(arg lf)"/>
   <param name="angular_false" value=$(arg af)"/>
 </launch>
