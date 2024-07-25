@@ -1,4 +1,13 @@
 <launch>
   <rosparam file="/home/varun/catkin_ws/src/hero_common/hero_bringup/config/parameter.yaml" command="load"/>
+  <arg name="lt" default="0.1"/>
+  <arg name="at" default="0.5"/>
+  <arg name="lf" default="0.1"/>
+  <arg name="af" default="0.5"/>
+  
   <node pkg="hero_bringup" type="multi_robot_controller.py" name="multi_robot_controller" output="screen"/>
+  <param name="linear_true" value="$(arg lt)"/>
+  <param name="angular_true" value=$(arg at)"/>
+  <param name="linear_false" value="$(arg lf)"/>
+  <param name="angular_false" value=$(arg af)"/>
 </launch>

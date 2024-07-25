@@ -12,11 +12,16 @@ class MultiRobotController:
         self.subscribers=[]
         self.publishers={}
         
+        self.linear_true=rospy.get_param('~linear_true',0.1)
+        self.angular_true=rospy.get_param('~angular_true',0.5)
+        self.linear_false=rospy.get_param('~linear_false',0.1)
+        self.angular_false=rospy.get_param('~angular_false',0.5)
+        
         
         for robot_name in self.robot_names:
             topic_name=f"/{robot_name}/distance"
             self.subscribers.append(rospy.Subscriber(topic_name,Float32,self.callback,robot_name))
-            self.publishers[robot_name]=rospy.Publisher(f"/{robot_name}/velocity_controller/cmd_velo",Twist,queue_size=10)
+            self.publishers[robot_name]=rospy.Publisher(f"/{robot_name}/velocity_controller/cmd_vel",Twist,queue_size=10)
             
         rospy.spin()
     
@@ -29,24 +34,24 @@ class MultiRobotController:
             self.send_velocity_stop(robot_name)
     
     def condition_met(self,data):
-        if data<0.35:
+        if data<0.37:
             return 1
         elif data<0.1:
-            return 2
+            return 1
         else:
             return 3
     
     
     def send_velocity_1(self,robot_name):
         cmd=Twist()
-        cmd.linear.x=0.15
-        cmd.angular.z=0.0
+        cmd.linear.x=self.linear_true
+        cmd.angular.z=self.angular_true
         self.publishers[robot_name].publish(cmd)  
         
     def send_velocity_2(self,robot_name):
         cmd=Twist()
-        cmd.linear.x=0.1
-        cmd.angular.z=0.5
+        cmd.linear.x=self.linear_false
+        cmd.angular.z=self.angular_false
         self.publishers[robot_name].publish(cmd)
         
     def send_velocity_stop(self,robot_name):
