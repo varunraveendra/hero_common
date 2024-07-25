@@ -9,5 +9,5 @@
   <param name="linear_true" value="$(arg lt)"/>
   <param name="angular_true" value="$(arg at)"/>
   <param name="linear_false" value="$(arg lf)"/>
-  <param name="angular_false" value=$(arg af)"/>
+  <param name="angular_false" value="$(arg af)"/>
 </launch>
