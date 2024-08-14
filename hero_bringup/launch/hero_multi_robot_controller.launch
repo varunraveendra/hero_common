@@ -4,10 +4,12 @@
   <arg name="at" default="0.5"/>
   <arg name="lf" default="0.1"/>
   <arg name="af" default="0.5"/>
+  <arg name="dist" default="0.37"/>
   
   <node pkg="hero_bringup" type="multi_robot_controller.py" name="multi_robot_controller" output="screen"/>
   <param name="linear_true" value="$(arg lt)"/>
   <param name="angular_true" value="$(arg at)"/>
   <param name="linear_false" value="$(arg lf)"/>
   <param name="angular_false" value="$(arg af)"/>
+  <param name="threshold_dist" value="$(arg dist)"/>
 </launch>
