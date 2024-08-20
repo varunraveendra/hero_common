@@ -2,7 +2,7 @@
 #define __TOF_H__
 
 #include "Wire.h"
-#include "VL53L0X.h" /* Include VL53L0X library */
+#include "VL53L1X.h" /* Include VL53L1X library */
 
 /* ROS Library */
 #define ROSSERIAL_ARDUINO_TCP
@@ -22,8 +22,8 @@ class TOFSensor {
     String tofFrame;               /* TOF sensor frame */
     unsigned long rate = 20, timer;
 
-    /* VL53L0X sensor instance */
-    VL53L0X *tof;
+    /* VL53L1X sensor instance */
+    VL53L1X *tof;
 
     char stream[100];
     bool TOFSensorEnable = true;

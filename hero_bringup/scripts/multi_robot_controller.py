@@ -12,11 +12,11 @@ class MultiRobotController:
         self.subscribers=[]
         self.publishers={}
         
-        self.linear_true=rospy.get_param('~linear_true',0.1)
-        self.angular_true=rospy.get_param('~angular_true',0.5)
-        self.linear_false=rospy.get_param('~linear_false',0.1)
-        self.angular_false=rospy.get_param('~angular_false',0.5)
-        self.threshold_dist=rospy.get_param('~threshold_dist',0.37)
+        self.linear_true=rospy.get_param('linear_true',0.0)
+        self.angular_true=rospy.get_param('angular_true',0.0)
+        self.linear_false=rospy.get_param('linear_false',0.0)
+        self.angular_false=rospy.get_param('angular_false',0.0)
+        self.threshold_dist=rospy.get_param('threshold_dist',0.37)
         
         
         for robot_name in self.robot_names:
@@ -35,10 +35,10 @@ class MultiRobotController:
             self.send_velocity_stop(robot_name)
     
     def condition_met(self,data):
-        if data<self.threshold_dist:
+        if data.data<self.threshold_dist:
             return 1
-        elif data<0.1:
-            return 1
+        elif data.data<0.1:
+            return 2
         else:
             return 3
     

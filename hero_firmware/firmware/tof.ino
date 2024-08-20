@@ -19,7 +19,7 @@ void TOFSensor::init(ros::NodeHandle &nh, String heroName) {
   Wire.pins(I2C_SDA, I2C_SCL); // Set custom I2C pins if required
   Wire.begin();               // Initialize I2C bus
   Wire.setClock(400000);      // Set I2C clock to 400kHz
-  this->tof = new VL53L0X();  // Instantiate VL53L0X object
+  this->tof = new VL53L1X();  // Instantiate VL53L1X object
  
   if (!this->tof->init()) {   // Initialize the sensor
     sprintf(this->stream, "\33[91m[%s] TOF sensor initialization failed!\33[0m", this->heroName.c_str());
@@ -27,9 +27,12 @@ void TOFSensor::init(ros::NodeHandle &nh, String heroName) {
     this->TOFSensorEnable = false;
     return;
   }
-
+  this->tof->setDistanceMode(VL53L1X::Medium);
+  this->tof->setMeasurementTimingBudget(30000);
+  this->tof->setROICenter(199);
+  this->tof->setROISize(4,4);
   this->tof->setTimeout(500); // Set timeout to 500ms
-  this->tof->startContinuous(); // Start continuous measurement mode
+  this->tof->startContinuous(50); // Start continuous measurement mode
 
   sprintf(this->stream, "\33[92m[%s] TOF sensor initialized!\33[0m", this->heroName.c_str());
   this->nh_->loginfo(this->stream);
