@@ -132,8 +132,8 @@ void VelocityControl::update(unsigned long rate) {
       this->lastLeftTicks=this->leftMotorTicks;
       this->lastRightTicks=this->rightMotorTicks;
 
-      int lefterror=-this->leftMotorSetpoint + left_delta;
-      int righterror=this->rightMotorSetpoint - right_delta;
+      double lefterror=-this->leftMotorSetpoint + left_delta;
+      double righterror=this->rightMotorSetpoint - right_delta;
 
 
       //integral
@@ -146,6 +146,10 @@ void VelocityControl::update(unsigned long rate) {
 
       this->leftout+=(lefterror*configVelPID.lkp) + (this->leftmotorintegral * configVelPID.lki) + (leftmotorderiv * configVelPID.lkd);//reverse
       this->rightout+=(righterror*configVelPID.rkp) + (this->rightmotorintegral * configVelPID.rki) + (rightmotorderiv * configVelPID.rkd);
+      this->leftout=constrain(this->leftout, -output_lim/2, output_lim/2);
+      this->rightout=constrain(this->rightout, -output_lim/2, output_lim/2);
+
+      
 
       this->leftoutfiltered=(0.3 * this->leftout) + ((1-0.3)*this->leftoutfiltered);
       this->rightoutfiltered=(0.3 * this->rightout) + ((1-0.3)*this->rightoutfiltered);
@@ -156,7 +160,7 @@ void VelocityControl::update(unsigned long rate) {
       //this->leftMotorPID->Compute();
       //this->rightMotorPID->Compute();
 
-      //sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)left_delta, (float)right_delta, (int)this->leftMotorOutput, (int)this->rightMotorOutput);
+      //sprintf(this->stream, "\33[92m[%s] Motor Set: [%f,%f], [%f,%f]->[%d,%d]\33[0m", this->heroName.c_str(), (float)this->leftMotorSetpoint, (float)this->rightMotorSetpoint, (float)left_delta, (float)right_delta, (int)this->leftout, (int)this->rightMotorOutput);
       //this->nh_->loginfo(this->stream);
 
       this->motorDriver->command((int)(this->leftMotorOutput) + (int)(this->motorDriver->leftMotorDeadzone), (int)(this->rightMotorOutput) + (int)(this->motorDriver->rightMotorDeadzone));
