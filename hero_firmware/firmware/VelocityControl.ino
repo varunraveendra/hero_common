@@ -146,8 +146,8 @@ void VelocityControl::update(unsigned long rate) {
 
       this->leftout+=(lefterror*configVelPID.lkp) + (this->leftmotorintegral * configVelPID.lki) + (leftmotorderiv * configVelPID.lkd);//reverse
       this->rightout+=(righterror*configVelPID.rkp) + (this->rightmotorintegral * configVelPID.rki) + (rightmotorderiv * configVelPID.rkd);
-      this->leftout=constrain(this->leftout, -output_lim/2, output_lim/2);
-      this->rightout=constrain(this->rightout, -output_lim/2, output_lim/2);
+      this->leftout=constrain(this->leftout, -output_lim, output_lim);
+      this->rightout=constrain(this->rightout, -output_lim, output_lim);
 
       
 
