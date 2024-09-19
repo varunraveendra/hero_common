@@ -18,7 +18,7 @@ For more in-depth information about HeRo, please visit the original documentatio
 
 ## HeRo+ Author
 <a href="https://github.com/varunraveendra">
-  <img src="https://github.com/varunraveendra.png" width="30" alt="Varun Raveendra"/>
+  <img src="https://github.com/varunraveendra.png" width="50" alt="Varun Raveendra"/>
 </a>
 
 
