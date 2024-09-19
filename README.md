@@ -17,7 +17,9 @@ For more in-depth information about HeRo, please visit the original documentatio
 </p>
 
 ## HeRo+ Author
-[![Varun Raveendra](https://github.com/varunraveendra.png?size=5)](https://github.com/varunraveendra)
+<a href="https://github.com/varunraveendra">
+  <img src="https://github.com/varunraveendra.png" width="30" alt="Varun Raveendra"/>
+</a>
 
 
 ## HeRo Authors
