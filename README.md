@@ -1,4 +1,4 @@
-# HeRo+ : An extended version of the HeRo Robot.
+# HeRo+ : An extended version of the [HeRo](https://github.com/verlab/hero_common) Robot.
 <p align="justify">
 Welcome to the HeRo+ project! This is an extension of the HeRo Robot, by VerLab.
 
