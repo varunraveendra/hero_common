@@ -1,29 +1,29 @@
-# HeRo: An Open Platform for Robotics Research and Education
+# HeRo+ : An extended version of the HeRo Robot.
 <p align="justify">
-Welcome to the HeRo project! This initiative introduces an innovative platform tailored for swarm robotics applications. It boasts affordability, ease of assembly using readily available components, and seamless integration with the industry-standard ROS (Robot Operating System). Our robotic platform is fully open-source, featuring a 3D-printed body coupled with open-source software. Within this repository, you'll discover a comprehensive range of ROS packages, firmware, simulation, examples, as well as additional resources such as CAD files, 3D models, schematics, and more.
+Welcome to the HeRo+ project! This is an extension of the HeRo Robot, by VerLab.
+
+The latest improvements after forking the repository include the following enhancements:
+- **Encoder Placement**: The encoders have been repositioned outside the wheel to eliminate slippage between the previously used gear shaft encoder, enhancing accuracy. 
+- **Encoder Reading**: There is no use of a Kalman filter for processing encoder data. The PID loop now utilizes the raw readings directly from the encoders, ensuring more immediate control adjustments. 
+- **New TOF Sensor**: The HeRo robot now features a new Time-of-Flight (TOF) sensor placed on the hat. The IMU sensor has been removed but can be reintroduced by replacing the TOF sensor. 
+- **Battery Upgrade**: The [battery](https://www.amazon.com/dp/B0CXSMLK8T?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1) has been upgraded to prevent over-discharge cutoff, improving the overall durability and safety of the robot. 
+- **STL Files Update**: Updated STL files for the new robot design are now available, reflecting the latest hardware improvements. 
 </p>
 
-For more in-depth information, please visit our documentation page [here](https://verlab.github.io/hero_common/).
+For more in-depth information about HeRo, please visit the original documentation page [here](https://verlab.github.io/hero_common/).
 
 <p align="center">
-<img alt="gif" width="400px" src="https://user-images.githubusercontent.com/14208261/188993419-52fea191-6da7-48d5-9ff6-0117f13973f2.gif"/>
+  <img alt="robot" width="400px" src="https://github.com/varunraveendra/hero_common/raw/master/Images/Screenshot%202024-09-19%20at%2012.12.53%E2%80%AFAM.png"/>
 </p>
 
-## Authors
+## HeRo+ Author
+[![Varun Raveendra](https://github.com/varunraveendra.png?size=50)](https://github.com/varunraveendra)
+
+
+## HeRo Authors
 [![Paulo Rezeck](https://github.com/rezeck.png?size=50)](https://rezeck.github.io/)
 [![Hector Azpurua](https://github.com/h3ct0r.png?size=50)](https://github.com/h3ct0r)
 [![Maurício Ferrari](https://github.com/mauferrari.png?size=50)](https://github.com/mauferrari)
-
-
-## Contributing
-We welcome and appreciate contributions from the community. If you have ideas, bug fixes, or enhancements you'd like to propose, please feel free to open an issue or submit a pull request. Together, we can make HeRo an even better platform for robotics enthusiasts and researchers.
-
-Thank you 🙏 to all our contributors!
-
-[<img alt="vitorHoller" width="40px" src="https://github.com/vitorHoller.png"/>](https://github.com/vitorHoller)
-[<img alt="Suptree" width="40px" src="https://github.com/Suptree.png"/>](https://github.com/Suptree)
-[<img alt="CaioContiG" width="40px" src="https://github.com/CaioContiG.png"/>](https://github.com/CaioContiG)
-
 
 
 ## License
