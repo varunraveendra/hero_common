@@ -3,6 +3,7 @@
 Welcome to the HeRo+ project! This is an extension of the HeRo Robot, by VerLab.
 
 The latest improvements after forking the repository include the following enhancements:
+- **New Bump Shield**: The robots now have a circular bump shield, so the robot's encoders and wheels are safe even when they collide.
 - **Encoder Placement**: The encoders have been repositioned outside the wheel to eliminate slippage between the previously used gear shaft encoder, enhancing accuracy. 
 - **Encoder Reading**: There is no use of a Kalman filter for processing encoder data. The PID loop now utilizes the raw readings directly from the encoders, ensuring more immediate control adjustments. 
 - **New TOF Sensor**: The HeRo robot now features a new Time-of-Flight (TOF) sensor placed on the hat. The IMU sensor has been removed but can be reintroduced by replacing the TOF sensor. 
