@@ -6,7 +6,7 @@ The latest improvements after forking the repository include the following enhan
 - **New Bump Shield**: The robots now have a circular bump shield, so the robot's encoders and wheels are safe even when they collide.
 - **Encoder Placement**: The encoders have been repositioned outside the wheel to eliminate slippage between the previously used gear shaft encoder, enhancing accuracy. 
 - **Encoder Reading**: There is no use of a Kalman filter for processing encoder data. The PID loop now utilizes the raw readings directly from the encoders, ensuring more immediate control adjustments. 
-- **New TOF Sensor**: The HeRo robot now features a new Time-of-Flight (TOF) sensor placed on the hat. The IMU sensor has been removed but can be reintroduced by replacing the TOF sensor. 
+- **New TOF Sensor**: The HeRo+ robot now features a new Time-of-Flight (TOF) sensor placed on the hat. The IMU sensor has been removed but can be reintroduced by replacing the TOF sensor. 
 - **Battery Upgrade**: The [battery](https://www.amazon.com/dp/B0CXSMLK8T?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1) has been upgraded to prevent over-discharge cutoff, improving the overall durability and safety of the robot. 
 - **STL Files Update**: Updated STL files for the new robot design are now available, reflecting the latest hardware improvements. 
 </p>
